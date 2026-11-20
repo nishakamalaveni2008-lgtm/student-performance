@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student Performance Portal</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>body{background:#f4f6fb}.hero{background:#172554;color:white;border-radius:18px;padding:26px}.card{border:0;box-shadow:0 4px 16px #17255412}.table{vertical-align:middle}</style></head>
+<body><main class="container py-4">
+<div class="hero mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h2>Student Academic Performance & Result Analysis</h2>
+            <p class="mb-0">Manage students, subjects, marks and academic results.</p>
+        </div>
+
+        <a href="http://localhost:8080/reports.html"
+   class="btn btn-light btn-lg">
+    View Reports
+</a>
+    </div>
+</div><div th:if="${message}" class="alert alert-success" th:text="${message}"></div><div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+<div class="row g-3 mb-4"><div class="col-md-4"><div class="card p-3"><small>Students</small><h2 th:text="${studentCount}">0</h2></div></div><div class="col-md-4"><div class="card p-3"><small>Subjects</small><h2 th:text="${subjectCount}">0</h2></div></div><div class="col-md-4"><div class="card p-3"><small>Mark records</small><h2 th:text="${markCount}">0</h2></div></div></div>
+<div class="row g-3">
+<div class="col-lg-6"><div class="card p-3 h-100"><h5>Add Student</h5><form method="post" action="/students" class="row g-2">
+<div class="col-md-6"><input class="form-control" name="studentId" placeholder="Student ID" required></div><div class="col-md-6"><input class="form-control" name="name" placeholder="Student name" required></div>
+<div class="col-md-6"><input class="form-control" name="department" placeholder="Department (e.g. IT)" required></div><div class="col-md-6"><input class="form-control" type="number" min="1" max="5" name="yearOfStudy" placeholder="Year" required></div><div><button class="btn btn-primary">Save Student</button></div></form></div></div>
+<div class="col-lg-6"><div class="card p-3 h-100"><h5>Add Subject</h5><form method="post" action="/subjects" class="row g-2">
+<div class="col-md-6"><input class="form-control" name="subjectId" placeholder="Subject ID" required></div><div class="col-md-6"><input class="form-control" name="subjectName" placeholder="Subject name" required></div>
+<div class="col-md-6"><input class="form-control" type="number" min="1" name="maxMarks" value="100" placeholder="Maximum marks" required></div><div class="col-md-6"><input class="form-control" type="number" min="0" name="passMarks" value="40" placeholder="Pass marks" required></div><div><button class="btn btn-primary">Save Subject</button></div></form></div></div>
+<div class="col-12"><div class="card p-3"><h5>Record / Update Marks</h5><form method="post" action="/marks" class="row g-2 align-items-end">
+<div class="col-md-3"><label class="form-label">Student</label><select class="form-select" name="studentId" required><option value="">Choose student</option><option th:each="s:${students}" th:value="${s.studentId}" th:text="${s.studentId+' - '+s.name}"></option></select></div>
+<div class="col-md-3"><label class="form-label">Subject</label><select class="form-select" name="subjectId" required><option value="">Choose subject</option><option th:each="s:${subjects}" th:value="${s.subjectId}" th:text="${s.subjectId+' - '+s.subjectName}"></option></select></div>
+<div class="col-md-2"><label class="form-label">Internal</label><input class="form-control" type="number" min="0" name="internalMarks" required></div>
+<div class="col-md-2"><label class="form-label">Exam</label><input class="form-control" type="number" min="0" name="examMarks" required></div><div class="col-md-2"><button class="btn btn-success w-100">Save Marks</button></div></form><small class="text-muted">Internal + exam marks must not exceed the subject maximum. A repeated student-subject entry updates the existing record.</small></div></div>
+<div class="col-12"><div class="card p-3"><div class="d-flex justify-content-between flex-wrap"><h5>Result Records</h5><a class="btn btn-outline-secondary btn-sm" href="/api/results">View JSON API</a></div>
+<div class="table-responsive"><table class="table table-striped"><thead><tr><th>Student</th><th>Department</th><th>Subject</th><th>Internal</th><th>Exam</th><th>Total</th><th>Average %</th><th>Grade</th><th>Status</th><th>Report</th>
+<th>Action</th></tr></thead>
+<tbody><tr th:each="m:${marks}"><td th:text="${m.student.studentId+' - '+m.student.name}"></td><td th:text="${m.student.department}"></td><td th:text="${m.subject.subjectName}"></td><td th:text="${m.internalMarks}"></td><td th:text="${m.examMarks}"></td><td th:text="${m.totalMarks}"></td><td th:text="${m.average}"></td><td th:text="${m.grade}"></td><td><span class="badge" th:classappend="${m.status=='PASS'?'bg-success':'bg-danger'}" th:text="${m.status}"></span></td><td><a th:href="@{/students/{id}(id=${m.student.studentId})}">View</a></td><td>
+    <form th:action="@{/marks/{id}/delete(id=${m.id})}"
+          method="post"
+          onsubmit="return confirm('Are you sure you want to delete this mark record?');">
+        <button type="submit" class="btn btn-danger btn-sm">
+            Delete
+        </button>
+    </form>
+</td></tr>
+<tr th:if="${#lists.isEmpty(marks)}"><td colspan="11" class="text-center text-muted">No results recorded yet.</td></tr></tbody></table></div></div></div>
+</div>
+<!-- Python Data Analysis Section -->
+<div class="card p-4 mt-4" id="analysis">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h4>Python Data Analysis & Visualization</h4>
+            <p class="text-muted mb-0">
+                Department performance, subject pass percentage and marks distribution.
+            </p>
+        </div>
+
+        <form method="post" action="/analysis/generate">
+            <button type="submit" class="btn btn-primary">
+                Generate Analysis
+            </button>
+        </form>
+    </div>
+
+    <hr>
+
+    <div class="row g-4">
+
+        <div class="col-lg-6">
+            <h6>Department-wise Average Performance</h6>
+<img th:src="@{/reports/department_average.png(v=${#dates.createNow().time})}"
+     class="img-fluid rounded border"
+     alt="Department average chart">                 class="img-fluid rounded border"
+                 alt="Department average chart">
+        </div>
+
+        <div class="col-lg-6">
+            <h6>Subject-wise Pass Percentage</h6>
+            <img src="/reports/subject_pass_percentage.png"
+                 class="img-fluid rounded border"
+                 alt="Subject pass percentage chart">
+        </div>
+
+        <div class="col-lg-6">
+            <h6>Student Marks Distribution</h6>
+            <img src="/reports/marks_distribution.png"
+                 class="img-fluid rounded border"
+                 alt="Marks distribution chart">
+        </div>
+
+    </div>
+</div>
+<footer class="text-center text-muted py-4">Scenario 8 · Student Academic Performance System</footer></main></body></html>

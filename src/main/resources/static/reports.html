@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Performance Reports</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 25px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #243b64;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .report {
+            background: white;
+            padding: 20px;
+            margin: 25px auto;
+            max-width: 1000px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        h2 {
+            color: #344e78;
+            text-align: center;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin: 25px;
+            color: #2456a6;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Student Academic Performance Reports</h1>
+    <p class="subtitle">
+        Department, subject and student marks analysis
+    </p>
+
+    <div class="report">
+        <h2>Department Average Performance</h2>
+        <img src="/reports/department_average.png"
+             alt="Department Average Chart">
+    </div>
+
+    <div class="report">
+        <h2>Marks Distribution</h2>
+        <img src="/reports/marks_distribution.png"
+             alt="Marks Distribution Chart">
+    </div>
+
+    <div class="report">
+        <h2>Subject-wise Pass Percentage</h2>
+        <img src="/reports/subject_pass_percentage.png"
+             alt="Subject Pass Percentage Chart">
+    </div>
+
+    <a class="back" href="/">Back to Home</a>
+
+</body>
+</html>
