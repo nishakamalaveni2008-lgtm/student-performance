@@ -1,0 +1,9 @@
+student_id,name,department,year_of_study,subject_id,subject_name,internal_marks,exam_marks,total_marks,average,grade,status
+STU003,Anu,CSE,2,SUB001,Java,15,73,88,88.0,A+,PASS
+STU001,Nisha,IT,2,SUB001,Java,20,70,90,90.0,O,PASS
+STU003,Anu,CSE,2,SUB002,DBMS,16,62,78,78.0,A,PASS
+STU001,Nisha,IT,2,SUB002,DBMS,18,65,83,83.0,A+,PASS
+STU003,Anu,CSE,2,SUB003,Fds,20,75,95,95.0,O,PASS
+STU001,Nisha,IT,2,SUB003,Fds,19,78,97,97.0,O,PASS
+STU003,Anu,CSE,2,SUB004,Software Engineering,19,71,90,90.0,O,PASS
+STU001,Nisha,IT,2,SUB004,Software Engineering,17,56,73,73.0,A,PASS
